@@ -1,117 +1,590 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Match https://skills.sh/docs: Geist for body text, Geist Mono for code/terminal UI. */
+  --font-sans: Geist, "Geist Fallback", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Theme variables (default: dark) */
+  --bg-color: #000;
+  --nav-bg-color: #000;
+  --border-color: #333;
+  --nav-prompt-color: #FFF;
+  --nav-link-color: #CCC;
+  --nav-link-active-color: #FFF;
+  --nav-link-hover-color: #FFF;
+  --contact-link-color: #CCC;
+  --contact-link-border-color: #333;
+  --contact-link-hover-color: #FFF;
+  --contact-link-hover-border-color: #FFF;
+  --footer-text-color: #666;
+
+  --text-color: #EFEFEF;
+  --text-color-muted: #A8A8A8;
+  --command-line-bg-color: #1E1E1E;
+  --command-line-text-color: #D6DADB;
+  --command-line-prompt-color: #999;
+
+  /* Theme switcher (footer) */
+  --theme-switcher-bg-color: #111;
+  --theme-switcher-active-bg-color: #2A2A2A;
+
+  /* Footer sticky region (CSS-only): assumed footer height for bottom-pinned sticky positioning */
+  --footer-sticky-assumed-height: 96px;
+}
+
+html[data-theme="light"] {
+  --bg-color: #FFF;
+  --nav-bg-color: #FFF;
+  --border-color: #DDD;
+  --nav-prompt-color: #111;
+  --nav-link-color: #555;
+  --nav-link-active-color: #111;
+  --nav-link-hover-color: #111;
+  --contact-link-color: #555;
+  --contact-link-border-color: #DDD;
+  --contact-link-hover-color: #111;
+  --contact-link-hover-border-color: #111;
+  --footer-text-color: #666;
+
+  --text-color: #111;
+  --text-color-muted: #555;
+  --command-line-bg-color: #F3F3F3;
+  --command-line-text-color: #111;
+  --command-line-prompt-color: #666;
+
+  --theme-switcher-bg-color: #F3F3F3;
+  --theme-switcher-active-bg-color: #E6E6E6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background-image: radial-gradient(circle at top right, #6DCFFB 0, #278DF1 40%, #127AFF 90%);
-  background-repeat: no-repeat;
-  font-family: 'Roboto', sans-serif;
-  padding-top: 5rem;
-  padding-bottom: 10rem;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
 }
 
-h4 {
-  color: #02AAF1;
-  text-transform: uppercase;
+/* Keep the "terminal" chrome monospaced even while the body text uses Geist */
+.nav-bar,
+.nav-prompt,
+.nav-link,
+.command-line,
+.prompt,
+.command,
+pre,
+code {
+  font-family: var(--font-mono);
 }
 
-h5 {
+/* Navigation Bar */
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  background-color: var(--nav-bg-color);
+  z-index: 100;
+}
+
+.nav-bar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--border-color);
+}
+
+.nav-prompt {
+  color: var(--nav-prompt-color);
   font-weight: bold;
-  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-section {
-  margin-bottom: 3rem;
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
 }
 
-.main {
-  background-color: #FFF;
-  padding: 3rem;
-  box-shadow: -30px 60px 60px 0px rgba(0, 0, 0, 0.2);
+.nav-link {
+  color: var(--nav-link-color);
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
-/* Contact */
-.contact-top {
-  margin-top: -2.5rem;
-  margin-bottom: 2.5rem;
+.nav-link:hover {
+  color: var(--nav-link-hover-color);
 }
 
-.contact-bottom {
-  margin-top: 4rem;
-  margin-bottom: -4rem;
+.nav-link.active {
+  color: var(--nav-link-active-color);
 }
 
-.contact-top, .contact-bottom {
-  text-align: center;
+/* Theme toggle (text-only; matches nav link styling) */
+/* Footer theme switcher (in-footer; no floating/overlay) */
+.theme-switcher {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: 2rem;
+  border: 1px solid var(--border-color);
+  background: var(--theme-switcher-bg-color);
+  margin-top: 1rem;
 }
 
-.contact-top img, .contact-bottom img {
-  width: 36px;
-  height: 36px;
-  margin-left: .4rem;
-  margin-right: .4rem;
-}
-
-/* Header */
-header {
-  text-align: right;
-}
-
-header h1 {
-  font-size: 3.5rem;
-}
-
-.headshot {
-  background-image: url(../images/johngully.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  border: 1px solid #02AAF1;
+.theme-switcher-button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
   border-radius: 100%;
-  height: 120px;
-  width: 120px;
-  min-height: 120px;
-  min-width: 120px;
-  margin-left: 30px;
+  color: var(--text-color-muted);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* Capabilities */
-.capability, .capability-leadership, .capability-design, .capability-technology {
+.theme-switcher-button[aria-pressed="true"] {
+  color: var(--text-color);
+  background: var(--theme-switcher-active-bg-color);
+}
+
+.theme-switcher-button::before {
+  content: '';
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  background-color: currentColor;
+  -webkit-mask: var(--theme-icon) no-repeat center / contain;
+  mask: var(--theme-icon) no-repeat center / contain;
+}
+
+.theme-switcher-button[data-theme-mode="auto"] {
+  --theme-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20viewBox%3D'0%200%2024%2024'%20fill%3D'none'%20stroke%3D'%23000'%20stroke-width%3D'2'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Crect%20x%3D'3'%20y%3D'4'%20width%3D'18'%20height%3D'12'%20rx%3D'2'/%3E%3Cpath%20d%3D'M7%2020h10'/%3E%3Cpath%20d%3D'M12%2016v4'/%3E%3C/svg%3E");
+}
+
+.theme-switcher-button[data-theme-mode="light"] {
+  --theme-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20viewBox%3D'0%200%2024%2024'%20fill%3D'none'%20stroke%3D'%23000'%20stroke-width%3D'2'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Ccircle%20cx%3D'12'%20cy%3D'12'%20r%3D'4'/%3E%3Cpath%20d%3D'M12%202v2'/%3E%3Cpath%20d%3D'M12%2020v2'/%3E%3Cpath%20d%3D'M4.93%204.93l1.41%201.41'/%3E%3Cpath%20d%3D'M17.66%2017.66l1.41%201.41'/%3E%3Cpath%20d%3D'M2%2012h2'/%3E%3Cpath%20d%3D'M20%2012h2'/%3E%3Cpath%20d%3D'M6.34%2017.66l-1.41%201.41'/%3E%3Cpath%20d%3D'M19.07%204.93l-1.41%201.41'/%3E%3C/svg%3E");
+}
+
+.theme-switcher-button[data-theme-mode="dark"] {
+  --theme-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20viewBox%3D'0%200%2024%2024'%20fill%3D'%23000'%3E%3Cpath%20d%3D'M21%2012.79A9%209%200%201%201%2011.21%203a7%207%200%200%200%209.79%209.79z'/%3E%3C/svg%3E");
+}
+
+/* Welcome Section */
+.welcome-section {
+  min-height: auto;
+  scroll-margin-top: 5rem;
+  padding-top: 5rem;
+}
+
+.welcome-section::after {
+  display: none;
+}
+
+.welcome-section.animation-complete::after {
+  display: block;
+}
+
+.welcome-output {
+  white-space: pre-line;
+  margin-top: 1.5rem;
+}
+
+.welcome-text {
+  color: var(--text-color);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+/* ASCII art needs tight line height (block characters will look "gappy" otherwise) */
+.welcome-text.ascii-art {
+  color: var(--text-color);
+  white-space: pre;
+  font-size: 1rem;
+  line-height: 1;
+  margin: 0;
+}
+
+.press-key {
+  margin-top: 1rem;
+  color: var(--text-color-muted);
+  font-size: 1rem;
+}
+
+
+/* Main Content */
+.main-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  padding-top: 4rem;
+  opacity: 1;
+}
+
+/* Footer sticky region: provides scroll room after contact and serves as the sticky "activation" area */
+.footer-sticky-region {
+  height: 90vh;
+  width: 100%;
+}
+
+/* Content Sections */
+.content-section {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  scroll-margin-top: 5rem;
+  position: relative;
+}
+
+.content-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 1px;
+  background-color: var(--border-color);
+  pointer-events: none;
+}
+
+.content-section:last-of-type::after {
+  display: none;
+}
+
+/* Command Line */
+.command-line {
+  padding: 1rem;
+  border-radius: .33rem;
+  background-color: var(--command-line-bg-color);
   margin-bottom: 2rem;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.capability-leadership .skill div:last-child {
-  background-color: #F8E400;
+.prompt {
+  color: var(--command-line-prompt-color);
 }
 
-.capability-design .skill div:last-child {
-  background-color: #F8008A;
+.command {
+  color: var(--command-line-text-color);
 }
 
-.capability-technology .skill div:last-child {
-  background-color: #02AAF1;
-}
-
-.skill {
-  margin-bottom: .75rem;
+.cursor-blink {
+  display: inline-block;
+  width: 0.8em;
+  height: 1.2em;
+  background-color: var(--text-color-muted);
+  margin-left: 0.2rem;
+  opacity: 0;
+  animation: none;
+  border-radius: 2px;
   vertical-align: middle;
 }
 
-.bar-name {
+.cursor-blink.active {
+  opacity: 1;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Command Output */
+.command-output {
+  /* Main content text */
+  color: var(--text-color-muted);
+}
+
+.command-output p {
+  margin-bottom: 1rem;
+}
+
+.command-output p:last-child {
+  margin-bottom: 0;
+}
+
+/* Experience Section */
+.experience-item {
+  margin-bottom: 3rem;
+}
+
+.experience-item:last-child {
+  margin-bottom: 0;
+}
+
+.experience-item h2 {
+  color: var(--text-color);
+  /* Match https://skills.sh/docs "Getting started" (h2): 24px/600, tighter tracking */
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  letter-spacing: -0.6px;
+  margin-bottom: 0.5rem;
+}
+
+.role {
+  color: var(--text-color);
+  /* `role` is now an h3; reset default heading spacing/weight so it behaves like body text. */
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-weight: 400;
   text-transform: uppercase;
 }
 
-.bar-0, .bar-20, .bar-40, .bar-60, .bar-80, .bar-100 {
-  height: 1.5rem;
+.role-dates {
+  margin-left: auto;
+  text-align: right;
+  white-space: nowrap;
 }
 
-.bar-0   { background: linear-gradient(to right, transparent 0%, #CCC 0%); background-clip: content-box; }
-.bar-20  { background: linear-gradient(to right, transparent 20%, #CCC 20%); background-clip: content-box; }
-.bar-40  { background: linear-gradient(to right, transparent 40%, #CCC 40%); background-clip: content-box; }
-.bar-60  { background: linear-gradient(to right, transparent 60%, #CCC 60%); background-clip: content-box; }
-.bar-80  { background: linear-gradient(to right, transparent 80%, #CCC 80%); background-clip: content-box; }
-.bar-100 { background: linear-gradient(to right, transparent 100%, #CCC 100%); background-clip: content-box; }
+.role-dates::before {
+  content: '';
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  margin-right: 0.45rem;
+  vertical-align: -0.1em;
+  background-color: var(--text-color-muted);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20fill-rule%3D'evenodd'%20d%3D'M6%204h12a3%203%200%200%201%203%203v13a3%203%200%200%201-3%203H6a3%203%200%200%201-3-3V7a3%203%200%200%201%203-3zm0%202a1%201%200%200%200-1%201v13a1%201%200%200%200%201%201h12a1%201%200%200%200%201-1V7a1%201%200%200%200-1-1H6z'%20/%3E%3Crect%20x%3D'7'%20y%3D'2'%20width%3D'2'%20height%3D'4'/%3E%3Crect%20x%3D'15'%20y%3D'2'%20width%3D'2'%20height%3D'4'/%3E%3Crect%20x%3D'5'%20y%3D'9'%20width%3D'14'%20height%3D'2'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20fill-rule%3D'evenodd'%20d%3D'M6%204h12a3%203%200%200%201%203%203v13a3%203%200%200%201-3%203H6a3%203%200%200%201-3-3V7a3%203%200%200%201%203-3zm0%202a1%201%200%200%200-1%201v13a1%201%200%200%200%201%201h12a1%201%200%200%200%201-1V7a1%201%200%200%200-1-1H6z'%20/%3E%3Crect%20x%3D'7'%20y%3D'2'%20width%3D'2'%20height%3D'4'/%3E%3Crect%20x%3D'15'%20y%3D'2'%20width%3D'2'%20height%3D'4'/%3E%3Crect%20x%3D'5'%20y%3D'9'%20width%3D'14'%20height%3D'2'/%3E%3C/svg%3E") no-repeat center / contain;
+}
 
-/* Animations */
-.contact-linkedin { animation-delay: .4s; }
-.contact-email { animation-delay: .6s; }
-.contact-download { animation-delay: .7s; }
-.contact-bottom { animation-delay: 1s; }
-.capabilities { animation-delay: .4s; }
-.learning { animation-delay: .6s; }
-.education { animation-delay: .8s; }
+.company-desc {
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.achievements {
+  list-style: none;
+  padding-left: 1.5rem;
+}
+
+.achievements li {
+  margin-bottom: 0.8rem;
+  position: relative;
+}
+
+.achievements li::before {
+  content: "→";
+  position: absolute;
+  left: -1.5rem;
+  color: var(--text-color);
+}
+
+.selected-contributions {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.selected-contributions strong {
+  color: var(--text-color);
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+/* Contact Links */
+.contact-links {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.contact-link {
+  color: var(--contact-link-color);
+  text-decoration: none;
+  border: 1px solid var(--contact-link-border-color);
+  padding: 0.5rem 1rem;
+  transition: all 0.2s;
+  display: inline-block;
+  max-width: 8rem;
+}
+
+.contact-link:hover {
+  color: var(--contact-link-hover-color);
+  border-color: var(--contact-link-hover-border-color);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  color: var(--footer-text-color);
+  margin-top: 4rem;
+  position: relative;
+  background: var(--bg-color);
+  z-index: 1;
+}
+
+/* Only sticky while we are scrolling within the footer region (CSS-only). */
+.footer-sticky-region .footer {
+  position: sticky;
+  /* Approximate footer height so it sits at the bottom when sticky. */
+  top: calc(100vh - var(--footer-sticky-assumed-height));
+  margin-top: 0;
+  z-index: 50;
+}
+
+.footer-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 1px;
+  background-color: var(--border-color);
+  pointer-events: none;
+}
+
+.footer p {
+  margin: 0;
+  flex: 1 1 auto;
+  text-align: left;
+}
+
+/* Switcher should sit to the right when there's room */
+.footer-inner .theme-switcher {
+  margin-top: 0;
+  flex: 0 0 auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-bar {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .welcome-text {
+    font-size: 1.5rem;
+  }
+
+  .command-line {
+    font-size: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .main-content {
+    padding: 1rem;
+    padding-top: 3rem;
+  }
+
+  .footer-inner {
+    padding: 1rem;
+  }
+
+  :root {
+    --footer-sticky-assumed-height: 80px;
+  }
+  
+  .content-section {
+    scroll-margin-top: 4rem;
+  }
+
+
+  .contact-links {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Stack role + dates on narrow screens */
+  .role {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .role-dates {
+    margin-left: 0;
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-text {
+    font-size: 1.2rem;
+  }
+
+  .command-line {
+    font-size: 0.9rem;
+  }
+
+  .experience-item h2 {
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: -0.5px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-inner p {
+    text-align: center;
+  }
+
+  :root {
+    --footer-sticky-assumed-height: 120px;
+  }
+}

@@ -4,198 +4,189 @@
     <title>John Gully</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" integrity="sha384-OHBBOqpYHNsIqQy8hL1U+8OXf9hH6QRxi0+EODezv82DfnZoV7qoHAZDwMwEJvSw" crossorigin="anonymous">
+    <script>
+      // Set theme before CSS loads to avoid a flash of the wrong theme.
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var mode = stored === 'light' || stored === 'dark' || stored === 'auto' ? stored : 'auto';
+          document.documentElement.setAttribute('data-theme-mode', mode);
+          var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+          document.documentElement.setAttribute('data-theme', mode === 'auto' ? (prefersLight ? 'light' : 'dark') : mode);
+        } catch (e) {
+          // If storage is blocked, fall back to default (dark variables in CSS).
+        }
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/index.css">
   </head>
   <body>
-    <div class="contact-top col-md-12 d-md-none">
-      <a href="https://www.linkedin.com/in/jgully" target="_blank"><img class="contact-linkedin animated bounceInDown" src="assets/images/icon-linkedin-light.svg" alt="linkedin" title="View my linkedin profile" /></a>
-      <a href="mailto:john@gully.us"><img class="contact-email animated bounceInDown" src="assets/images/icon-mail-light.svg" alt="email" title="Contact by email - john@gully.us" /></a>
-      <a href="assets/downloads/John Gully - Resume.pdf" target="_blank"><img class="contact-download animated bounceInDown" src="assets/images/icon-download-light.svg" alt="download" title="Download my resume" /></a>
-    </div>
-    <div class="container main">
-      <!-- Header -->
-      <section class="header row animated fadeInUp">
-        <div class="contact-md col-md-3 d-none d-md-block">
-          <a href="https://www.linkedin.com/in/jgully" target="_blank"><img src="assets/images/icon-linkedin.svg" alt="linkedin" title="View my linkedin profile" /></a>
-          <a href="mailto:john@gully.us"><img src="assets/images/icon-mail.svg" alt="email" title="Contact by email - john@gully.us" /></a>
-          <a href="assets/downloads/John Gully - Resume.pdf" target="_blank"><img src="assets/images/icon-download.svg" alt="download" title="Download my resume" /></a>
+    <!-- Navigation -->
+    <nav class="nav-bar">
+      <a href="#welcome" class="nav-prompt nav-home">~/john-gully</a>
+      <div class="nav-links">
+        <a href="#about" class="nav-link">./about</a>
+        <a href="#experience" class="nav-link">./experience</a>
+        <a href="#skills" class="nav-link">./skills</a>
+        <a href="#education" class="nav-link">./education</a>
+        <a href="#contact" class="nav-link">./contact</a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+      <!-- Welcome Section (Animated) -->
+      <section class="content-section welcome-section" id="welcome">
+        <code class="command-line">
+          <span class="prompt">$</span> <span class="command">whoami</span><span class="cursor-blink" id="cursor-welcome"></span>
+        </code>
+        <div class="command-output welcome-output" id="welcome-output">
+          <pre class="welcome-text ascii-art" id="john-gully-ascii-art">
+     ██╗ ██████╗ ██╗  ██╗███╗   ██╗
+     ██║██╔═══██╗██║  ██║████╗  ██║                           
+     ██║██║   ██║███████║██╔██╗ ██║
+     ██║██║   ██║██╔══██║██║ ██╗██║
+██   ██║╚██████╔╝██║  ██║██║  ████║
+╚█████╔╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝        
+ ╚════╝                                              
+██████╗  ██╗   ██╗██╗     ██╗  ██╗   ██╗
+██╔═══╝  ██║   ██║██║     ██║   ██╗ ██╔╝
+██║  ███╗██║   ██║██║     ██║    ████╔╝
+██║   ██║██║   ██║██║     ██║     ██╔╝
+╚██████╔╝╚██████╔╝███████╗███████╗██║
+ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚═╝
+
+AI-Driven Technology Executive | Design + Engineering
+          </pre>
+          <div class="press-key" id="press-key" style="display: none;">Press any key to continue&nbsp;&nbsp;<span class="cursor-blink" id="cursor-press-key"></span></div>
         </div>
-        <header class="col-md-9">
-          <div class="d-flex flex-row-reverse">
-            <div class="headshot d-none d-md-block"></div>
-            <div class="">
-              <h1>John Gully</h1>
-              <h3>Design + Engineering Leader</h3>
+      </section>
+
+      <!-- About Section -->
+      <section class="content-section" id="about">
+        <div class="command-line">
+          <span class="prompt">$</span> <span class="command">man about</span><span class="cursor-blink" id="cursor-about"></span>
+        </div>
+        <div class="command-output">
+          <p>CTO and technology leader with 20+ years of experience building and scaling SaaS platforms, engineering organizations, and AI-enabled products across startup, enterprise, and consulting environments. Proven at translating business strategy into technical systems, with hands-on leadership spanning platform architecture, product delivery, and operational execution. Brings a rare combination of technical judgment, strong design sensibility, and people-first leadership.</p>
+        </div>
+      </section>
+
+      <!-- Experience Section -->
+      <section class="content-section" id="experience">
+        <code class="command-line">
+          <span class="prompt">$</span> <span class="command">ls -la /experience</span><span class="cursor-blink" id="cursor-experience"></span>
+        </code>
+        <div class="command-output">
+          <div class="experience-item">
+            <h2>GoodDay Software</h2>
+            <h3 class="role"><span class="role-title">Co-founder & Chief Technology Officer</span><span class="role-dates">Jul 2023 - Present</span></h3>
+            <p class="company-desc">VC-backed SaaS company building modern operating and inventory management software for ecommerce brands.</p>
+            <ul class="achievements">
+              <li>Co-founded the company and built the product and platform from initial concept through launch, taking the business from 0 to 40+ customers and $1M in revenue</li>
+              <li>Played a key role in seed fundraising by leading technical demos and supporting investor technical diligence</li>
+              <li>Built and scaled the SaaS platform, owning technology strategy, system architecture, and engineering execution</li>
+              <li>Designed and implemented a robust, immutable inventory ledger serving as the system of record for merchant inventory levels and cost of goods sold (COGS)</li>
+              <li>Hired and led a cross-functional engineering and design team, establishing platform standards and modern engineering practices</li>
+              <li>Established AI-assisted software development as the default engineering workflow, driving adoption of AI tooling to improve delivery speed and team effectiveness</li>
+              <li>Led innovation and rapid prototyping of AI-powered product capabilities, using technical experimentation to inform product direction</li>
+            </ul>
+          </div>
+
+          <div class="experience-item">
+            <h2>Shopify</h2>
+            <h3 class="role"><span class="role-title">Senior Engineering Leader, Merchandising</span><span class="role-dates">Apr 2021 - Jul 2023</span></h3>
+            <ul class="achievements">
+              <li>Led fully remote, globally distributed frontend and mobile engineering teams delivering core merchandising capabilities at scale</li>
+              <li>Scaled the engineering organization from 18 to 65+ engineers, building team structure, management layers, and delivery practices to support rapid growth</li>
+              <li>Partnered with product, design, and senior engineering leadership (Directors and VPs) to deliver high-impact capabilities aligned with merchant and business needs</li>
+              <li>Drove delivery of AI-assisted product description capabilities using large language models</li>
+              <li>Delivered B2B commerce capabilities and expanded merchandising platform support from 250 to 2,000+ product variations per item</li>
+              <li>Designed and led a leadership development program to grow emerging engineering leaders</li>
+            </ul>
+          </div>
+
+          <div class="experience-item">
+            <h2>Slalom</h2>
+            <h3 class="role"><span class="role-title">Director of Experience Design & Engineering</span><span class="role-dates">Jan 2011 - Apr 2021</span></h3>
+            <ul class="achievements">
+              <li>Progressed through multiple roles over a 10-year tenure, culminating in Director-level responsibility spanning engineering, experience design, product delivery, and practice leadership</li>
+              <li>Held P&L accountability for the practice, including revenue growth, utilization, staffing, and financial performance</li>
+              <li>Led cross-functional teams building new digital products from concept through launch</li>
+              <li>Worked with client product, design, and technology leaders to define product vision, shape roadmaps, and translate business goals into shipped software</li>
+              <li>Owned product discovery and rapid prototyping efforts to validate concepts and accelerate time to market</li>
+            </ul>
+            <div class="selected-contributions">
+              <strong>Selected Contributions:</strong>
+              <ul class="achievements">
+                <li>Created PatternPack, an open-source tool for generating living design systems, officially supported by Slalom</li>
+                <li>Represented the Dallas market on Slalom's Talent Management Advisory Council, contributing to national people development initiatives and helping drive adoption at the market level</li>
+              </ul>
             </div>
           </div>
-        </header>
-      </section>
 
-      <!-- Profile -->
-      <section class="profile row animated fadeInUp">
-        <div class="col-md-3 gutter">
-          <h4>Profile</h4>
-        </div>
-        <div class="col-md-9 content">
-          I have a deep background in design and technology, and enjoy bringing new products to life. As a leader of great people, I help others reach for and realize their potential as a part of a high-performing team. I desire to spend time working with passionate people to create new and exciting products that make a difference.
-        </div>
-      </section>
-
-      <!-- Capabilities -->
-      <section class="capabilities row animated fadeIn">
-        <div class="col-md-3 gutter">
-          <h4>Capabilities</h4>
-        </div>
-        <div class="col-md-9 content">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="capability-leadership">
-                <h5>Leadership</h5>
-                <div class="row skill">
-                  <div class="col-6 col-lg-7 col-xl-6 my-auto bar-name">Product</div><div class="col-6 col-lg-5 col-xl-6 my-auto bar-100"></div>
-                </div>
-                <div class="row skill">
-                  <div class="col-6 col-lg-7 col-xl-6 my-auto bar-name">Empathy</div><div class="col-6 col-lg-5 col-xl-6 my-auto bar-80"></div>
-                </div>
-                <div class="row skill">
-                  <div class="col-6 col-lg-7 col-xl-6 my-auto bar-name">People + Talent</div><div class="col-6 col-lg-5 col-xl-6 my-auto bar-60"></div>
-                </div>
-                <div class="row skill">
-                  <div class="col-6 col-lg-7 col-xl-6 my-auto bar-name">Agile Teams (Scrum)</div><div class="col-6 col-lg-5 col-xl-6 my-auto bar-100"></div>
-                </div>
-                <div class="row skill">
-                  <div class="col-6 col-lg-7 col-xl-6 my-auto bar-name">Public Speaking</div><div class="col-6 col-lg-5 col-xl-6 my-auto bar-80"></div>
-                </div>
-              </div>
-              <div class="capability-design">
-                <h5>Experience Design</h5>
-                <div class="row skill">
-                  <div class="col-6 col-lg-7 col-xl-6 bar-name">Design Systems</div><div class="col-6 col-lg-5 col-xl-6 bar-100"></div>
-                </div>
-                <div class="row skill">
-                  <div class="col-6 col-lg-7 col-xl-6 bar-name">Product Ideation</div><div class="col-6 col-lg-5 col-xl-6 bar-80"></div>
-                </div>
-                <div class="row skill">
-                  <div class="col-6 col-lg-7 col-xl-6 bar-name">Interaction Design</div><div class="col-6 col-lg-5 col-xl-6 bar-60"></div>
-                </div>
-                <div class="row skill">
-                  <div class="col-6 col-lg-7 col-xl-6 bar-name">Visual Design</div><div class="col-6 col-lg-5 col-xl-6 bar-40"></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 capability-technology">
-              <h5>Technology</h5>
-              <div class="row skill">
-                <div class="col-6 col-lg-7 col-xl-6 bar-name">Application Arch</div><div class="col-6 col-lg-5 col-xl-6 bar-80"></div>
-              </div>
-              <div class="row skill">
-                <div class="col-6 col-lg-7 col-xl-6 bar-name">Cloud Arch (AWS)</div><div class="col-6 col-lg-5 col-xl-6 bar-80"></div>
-              </div>
-              <div class="row skill">
-                <div class="col-6 col-lg-7 col-xl-6 bar-name">DevOps</div><div class="col-6 col-lg-5 col-xl-6 bar-40"></div>
-              </div>
-              <div class="row skill">
-                <div class="col-6 col-lg-7 col-xl-6 bar-name">HTML</div><div class="col-6 col-lg-5 col-xl-6 bar-100"></div>
-              </div>
-              <div class="row skill">
-                <div class="col-6 col-lg-7 col-xl-6 bar-name">CSS</div><div class="col-6 col-lg-5 col-xl-6 bar-80"></div>
-              </div>
-              <div class="row skill">
-                <div class="col-6 col-lg-7 col-xl-6 bar-name">JavaScript</div><div class="col-6 col-lg-5 col-xl-6 bar-80"></div>
-              </div>
-              <div class="row skill">
-                <div class="col-6 col-lg-7 col-xl-6 bar-name">Node</div><div class="col-6 col-lg-5 col-xl-6 bar-40"></div>
-              </div>
-              <div class="row skill">
-                <div class="col-6 col-lg-7 col-xl-6 bar-name">Microsoft .NET</div><div class="col-6 col-lg-5 col-xl-6 bar-100"></div>
-              </div>
-              <div class="row skill">
-                <div class="col-6 col-lg-7 col-xl-6 bar-name">SQL + NoSQL DB</div><div class="col-6 col-lg-5 col-xl-6 bar-80"></div>
-              </div>
-              <div class="row skill">
-                <div class="col-6 col-lg-7 col-xl-6 bar-name">Unit Testing</div><div class="col-6 col-lg-5 col-xl-6 bar-80"></div>
-              </div>
-              <div class="row skill">
-                <div class="col-6 col-lg-7 col-xl-6 bar-name">UI Testing</div><div class="col-6 col-lg-5 col-xl-6 bar-40"></div>
-              </div>
-            </div>
+          <div class="experience-item">
+            <h2>Early Career</h2>
+            <h3 class="role"><span class="role-title">Software Engineering & Design Leadership</span><span class="role-dates">2000 - 2011</span></h3>
+            <p>Built a strong foundation in software engineering, UX, and product development through progressively senior roles across enterprise, product, and consulting environments, including Mary Kay, Tyler Technologies, Robertson Opportunity Capital, and The Persimmon Group.</p>
           </div>
         </div>
       </section>
 
-      <!-- Learning -->
-      <section class="learning row animated fadeIn">
-        <div class="col-md-3 gutter">
-          <h4>Learning</h4>
-        </div>
-        <div class="col-md-9 content">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="capability">
-                <h5>Training & Conferences</h5>
-                <p><strong>2016</strong> - Slalom leadership training</p>
-                <p><strong>2015</strong> - Big (D)esign <small>SPEAKER</small></p>
-                <p><strong>2013</strong> - Day of .NET  <small>SPEAKER</small></p>
-                <p><strong>2013</strong> - Xamarin Evolve</p>
-                <p><strong>2012</strong> - Adaptive Path UX Intensive</p>
-                <p><strong>2011</strong> - iOS Bootcamp</p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="capability">
-                <h5>Personal Passions</h5>
-                <strong>PatternPack</strong>
-                <p>Leader of the open source project for building your own design system.</p>
-                <strong>Designer + Developer Collaboration</strong>
-                <p>Bridging the gap between designers and developers to help bring amazing products to life.</p>
-                <strong>New Technologies & Frameworks</strong>
-                <p>Vue.js, Elm, functional programming</p>
-              </div>
-            </div>
+      <!-- Skills Section -->
+      <section class="content-section" id="skills">
+        <code class="command-line">
+          <span class="prompt">$</span> <span class="command">ls /skills</span><span class="cursor-blink" id="cursor-skills"></span>
+        </code>
+        <div class="command-output">
+          <p>Technology Strategy, SaaS Architecture, Engineering Leadership, AI Strategy & Enablement, Technology Operations, Product Development, P&L Management, Distributed Team Leadership, Design Systems</p>
         </div>
       </section>
 
-      <!-- Education -->
-      <section class="education row animated fadeIn">
-        <div class="col-md-3 gutter">
-          <h4>Formal Education</h4>
+      <!-- Education Section -->
+      <section class="content-section" id="education">
+        <code class="command-line">
+          <span class="prompt">$</span> <span class="command">which education</span><span class="cursor-blink" id="cursor-education"></span>
+        </code>
+        <div class="command-output">
+          <p>Bachelor of Business Administration (BBA), Management of Information Systems</p>
+          <p>Northwood University - Graduated Summa Cum Laude</p>
         </div>
-        <div class="col-md-9 content">
-          <div class="capability">
-            <h5>Northwood University</h5>
-            <div class="row skill">
-              <div class="col-2 col-lg-1">2000</div>
-              <div class="col-10 col-lg-11">
-                BBA Management of Information Systems<br />
-                <small>Graduated in the top 10% with Suma Cum Laude honors.</small>
-              </div>
-            </div>
-            <div class="row skill">
-              <div class="col-2 col-lg-1">1998</div>
-              <div class="col-10 col-lg-11">
-                AA Computer Systems Management<br />
-                <small>Graduated as valedictorian with Suma Cum Laude honors.</small>
-              </div>
-            </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section class="content-section" id="contact">
+        <code class="command-line">
+          <span class="prompt">$</span> <span class="command">ping john.gully</span><span class="cursor-blink" id="cursor-contact"></span>
+        </code>
+        <div class="command-output">
+          <p>I'm open to conversations around senior technology leadership, AI engineering leadership, and technology operations roles where execution, people leadership, and business outcomes matter.</p>
+          <div class="contact-links">
+            <a href="mailto:john@gully.us" class="contact-link">> email</a>
+            <a href="https://www.linkedin.com/in/jgully" target="_blank" class="contact-link">> linkedin</a>
+            <a href="assets/downloads/John%20Gully%20-%20Resume.pdf" target="_blank" rel="noopener noreferrer" class="contact-link">> resume</a>
           </div>
         </div>
       </section>
+    </main>
+
+    <!-- Footer sticky region (acts as the scroll spacer / trigger) -->
+    <div class="footer-sticky-region">
+      <footer class="footer">
+        <div class="footer-inner">
+          <p>© 2026 John Gully. All rights reserved.</p>
+          <div class="theme-switcher" role="group" aria-label="Theme">
+            <button type="button" class="theme-switcher-button" data-theme-mode="auto" aria-label="Auto theme" aria-pressed="false"></button>
+            <button type="button" class="theme-switcher-button" data-theme-mode="light" aria-label="Light theme" aria-pressed="false"></button>
+            <button type="button" class="theme-switcher-button" data-theme-mode="dark" aria-label="Dark theme" aria-pressed="false"></button>
+          </div>
+        </div>
+      </footer>
     </div>
 
-    <div class="contact-bottom col-12 animated fadeInDown">
-      <a href="https://www.linkedin.com/in/jgully" target="_blank"><img src="assets/images/icon-linkedin-light.svg" alt="linkedin" title="View my linkedin profile" /></a>
-      <a href="mailto:john@gully.us"><img src="assets/images/icon-mail-light.svg" alt="email" title="Contact by email - john@gully.us" /></a>
-      <a href="assets/downloads/John Gully - Resume.pdf" target="_blank"><img src="assets/images/icon-download-light.svg" alt="download" title="Download my resume" /></a>
-    </div>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="assets/js/index.js"></script>
   </body>
 </html>

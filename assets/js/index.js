@@ -2,12 +2,10 @@
 const HEADER_WHOAMI_DELAY_MS = 1500;
 const HEADER_CONTINUE_TIMEOUT_MS = 5000;
 const HEADER_FADE_IN_DURATION_MS = 300;
-
+const HEADER_TAGLINE_DELAY_MS = 200;
 const FADE_IN_DURATION_MS = 300;
-
 const SECTION_FADE_IN_DURATION_MS = 300;
 const SECTION_FADE_IN_STAGGER_MS = 100;
-
 const KEYBOARD_NAV_SCROLL_RESET_MS = 1000;
 
 // State management
@@ -17,7 +15,7 @@ let headerAnimationComplete = false;
 let cursorOverrideSectionId = null;
 
 // Theme (auto/light/dark via CSS variables)
-const THEME_MODE_STORAGE_KEY = 'theme'; // keep existing key for backward compatibility
+const THEME_MODE_STORAGE_KEY = 'theme';
 const THEME_MODES = ['auto', 'dark', 'light'];
 
 function getPreferredThemeFromSystem() {
@@ -31,7 +29,6 @@ function normalizeThemeMode(mode) {
 function getStoredThemeMode() {
   try {
     const stored = localStorage.getItem(THEME_MODE_STORAGE_KEY);
-    // Back-compat: older values were 'light'|'dark'. Treat as explicit mode.
     if (stored === 'light' || stored === 'dark' || stored === 'auto') return stored;
   } catch {
     // ignore (storage may be blocked)
@@ -107,16 +104,31 @@ function clearCursorOverrideOnFirstScroll() {
 
 // Fade in effect
 function fadeIn(element, duration = FADE_IN_DURATION_MS, forceReflow = false, callback) {
+  if (!element) {
+    return;
+  }
+
   // If we just set opacity to 0 in the same tick (common when toggling display:none -> block),
   // forcing a reflow helps ensure the browser commits that initial state before transitioning.
   if (forceReflow) {
+    element.style.display = 'block';
     void element.offsetHeight;
   }
+
   element.style.transition = `opacity ${duration}ms ease-in`;
   element.style.opacity = '1';
   if (callback) {
     setTimeout(callback, duration);
   }
+}
+
+function hideElement(element) {
+  if (!element) {
+    return;
+  }
+  element.style.display = 'none';
+  element.style.transition = 'none';
+  element.style.opacity = '0';
 }
 
 // Animation state
@@ -125,6 +137,7 @@ let animationTimeouts = [];
 // Animated header sequence
 function startHeaderAnimation() {
   const asciiArt = document.getElementById('john-gully-ascii-art');
+  const welcomeTagline = document.getElementById('welcome-tagline');
   const pressKey = document.getElementById('press-key');
   const mainContent = document.getElementById('main-content');
   
@@ -142,29 +155,28 @@ function startHeaderAnimation() {
   mainContent.style.opacity = '1';
 
   // Step 1: show `whoami` alone for 1s.
-  if (asciiArt) {
-    asciiArt.style.display = 'none';
-  }
-  pressKey.style.display = 'none';
+  hideElement(asciiArt);
+  hideElement(welcomeTagline);
+  hideElement(pressKey);
   setCursorOverride('welcome');
 
   // Step 2: show ASCII art + "Press any key to continue", with cursor on press-key.
   const stage2TimeoutId = setTimeout(() => {
-    if (asciiArt) {
-      asciiArt.style.display = 'block';
-      // When toggling from display:none, we need a committed/pained opacity:0 state
-      // before transitioning to opacity:1, otherwise the fade can appear "instant".
-      asciiArt.style.transition = 'none';
-      asciiArt.style.opacity = '0';
-      fadeIn(asciiArt, HEADER_FADE_IN_DURATION_MS, true);
+    hideElement(asciiArt);
+    fadeIn(asciiArt, HEADER_FADE_IN_DURATION_MS, true);
+
+    if (welcomeTagline) {
+      // Show the tagline shortly after the ASCII art (and keep it visible after continue).
+      const taglineTimeoutId = setTimeout(() => {
+        fadeIn(welcomeTagline, HEADER_FADE_IN_DURATION_MS, true);        
+        const pressKeyTimeoutId = setTimeout(() => {
+          fadeIn(pressKey, HEADER_FADE_IN_DURATION_MS, true);
+          setCursorOverride('pressKey');
+        }, HEADER_TAGLINE_DELAY_MS);
+        animationTimeouts.push(pressKeyTimeoutId);          
+      }, HEADER_TAGLINE_DELAY_MS);
+      animationTimeouts.push(taglineTimeoutId);
     }
-
-    pressKey.style.display = 'block';
-    pressKey.style.transition = 'none';
-    pressKey.style.opacity = '0';
-
-    fadeIn(pressKey, HEADER_FADE_IN_DURATION_MS, true);
-    setCursorOverride('pressKey');
 
     // Avoid focused nav links causing Enter/Space to trigger hash navigation.
     if (document.activeElement && typeof document.activeElement.blur === 'function') {
@@ -178,6 +190,9 @@ function startHeaderAnimation() {
       if (revealed) return;
       revealed = true;
       if (timeoutId) clearTimeout(timeoutId);
+      // Prevent any pending header-stage timeouts (e.g., delayed tagline) from firing after reveal.
+      animationTimeouts.forEach((t) => clearTimeout(t));
+      animationTimeouts = [];
       document.removeEventListener('keydown', keyHandler, true);
       document.removeEventListener('keyup', keyHandler, true);
       document.removeEventListener('pointerdown', pointerHandler, true);
@@ -215,11 +230,16 @@ function startHeaderAnimation() {
 
 // Show remaining content sections
 function showRemainingContent() {
+  const welcomeTagline = document.getElementById('welcome-tagline');
   const pressKey = document.getElementById('press-key');
   const remainingSections = document.querySelectorAll('.content-section:not(.welcome-section)');
   const welcomeSection = document.getElementById('welcome');
   
   pressKey.style.display = 'none';
+  if (welcomeTagline) {
+    welcomeTagline.style.display = 'block';
+    welcomeTagline.style.opacity = '1';
+  }
   headerAnimationComplete = true;
 
   // Once content is revealed, show cursor next to `man about` until the user scrolls.
